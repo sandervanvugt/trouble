@@ -1,0 +1,13 @@
+[Unit]
+Description=Make the entire system read-only
+After=local-fs.target
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/mount -o remount,ro /
+
+[Install]
+WantedBy=multi-user.target
+
