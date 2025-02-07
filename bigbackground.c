@@ -51,4 +51,22 @@ int main() {
     if (mlock(buffer, GIB_6) != 0) {
         perror("Failed to lock memory (mlock)");
         free(buffer);
+        return EXIT_FAILURE;
+    }
+
+    // Touch each memory page to force it into RAM
+    size_t page_size = sysconf(_SC_PAGESIZE);
+    for (size_t i = 0; i < GIB_6; i += page_size) {
+        buffer[i] = 0; // Writing forces allocation in RAM
+    }
+
+    printf("6 GiB resident memory allocated and locked. Running in background (PID: %d)\n", getpid());
+
+    // Keep the process alive indefinitely
+    while (1) {
+        sleep(60); // Sleep to keep the daemon running without consuming CPU
+    }
+
+    return EXIT_SUCCESS;
+}
 
